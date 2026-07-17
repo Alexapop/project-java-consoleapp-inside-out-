@@ -150,7 +150,7 @@ Hasta la próxima!!!
     - La interfaz de usuario permite filtrar por fecha (10%)
 
 - <strong>Persistencia de datos</strong>
-    - Se hace un uso adecuado de la interface List\<E>. (10%)
+    - Se hace un uso adecuado de la interface Map\<E>. (10%)
 
 - <strong>Código y Buenas Prácticas</strong>
     - Tests de cobertura mínimo un 70% (20%)
