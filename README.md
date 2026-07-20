@@ -163,9 +163,11 @@ Hasta la próxima!!!
     - Se hace un uso adecuado de la interface Map\<E>. (10%)
 
 - <strong>Código y Buenas Prácticas</strong>
-    - Tests de cobertura mínimo un 70% (20%)
+    - Tests de cobertura mínimo un 70% (10%)
     - El código está bien estructurado (10%)
     - Correcta separación de responsabiidades. S de "SOLID" (10%)
- 
+
+- Documentación: Readme debidamente trabajado (10%)
+
 - Si el programa presenta errores de compilación se calificará el proyecto con 0 pts
 
