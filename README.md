@@ -1,6 +1,6 @@
 # Project Inside Out
 
-# Instrucciones
+## Instrucciones
 Se os ha encargado la creación de una aplicación de consola con la cual el usuario podrá gestionar momentos vividos, Mi Diario. Cada momento tendrá una emoción asignada junto con la fecha de cuando ocurrio.
 
 Cada momento vivído tendrá un identificador, un título, una descripción, una emoción, fecha del momento, fecha de creación, fecha de modificación.
@@ -19,7 +19,9 @@ Listado de emociones:
 
 Por cada historia de usuario se deberán redactar los criterios de aceptación.
 
-# Historias de usuario
+---
+
+## Historias de usuario
 1. COMO usuario QUIERO añadir un momento vivido PARA poder visualisarlo cuando lo necesite recordar
 
 2. COMO usuario QUIERO recuperar la lista de lo momentos vividos registrados PARA poder repasarlos
@@ -32,7 +34,9 @@ Por cada historia de usuario se deberán redactar los criterios de aceptación.
 
 6. COMO usuario QUIERO salir del programa PARA poder iniciar otro
 
-# Ejemplo de interacción con la consola
+---
+
+## Ejemplo de interacción con la consola
 
 ```
 My diario:
@@ -141,7 +145,13 @@ Seleccione una opción: 5
 Hasta la próxima!!!
 ```
 
-# 🏁 Rúbrica de evaluación
+---
+
+## Refinamiento (Proximamente)
+
+---
+
+## 🏁 Rúbrica de evaluación
 - <strong>Interfaz de usuario</strong>
     - La interfaz de usuario permite añadir (10%)
     - La interfaz de usuario permite visualizar todos los momentos (10%)
@@ -156,4 +166,6 @@ Hasta la próxima!!!
     - Tests de cobertura mínimo un 70% (20%)
     - El código está bien estructurado (10%)
     - Correcta separación de responsabiidades. S de "SOLID" (10%)
+ 
+- Si el programa presenta errores de compilación se calificará el proyecto con 0 pts
 
