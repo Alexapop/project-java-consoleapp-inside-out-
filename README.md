@@ -147,8 +147,24 @@ Hasta la próxima!!!
 
 ---
 
-## Refinamiento (Proximamente)
+## Refinamiento
+### Historias de usuarios
+```
+## Modificar datos de un momento vivido
+**Como** usuario  
+**Quiero** modificar cualquier dato de un momento vivido (título, descripción, emoción o fecha del momento)  
+**Para** mantener mi diario actualizado cuando necesite corregir o ampliar información
 
+## Generar un archivo de momentos vividos en formato CSV
+**Como** usuario  
+**Quiero** generar la lista completa de momentos vividos en un archivo CSV  
+**Para** guardar, compartir o analizar mis recuerdos fuera de la aplicación
+
+## Acceso protegido por contraseña
+**Como** usuario  
+**Quiero** acceder a mi diario únicamente mediante una contraseña  
+**Para** asegurar que mis momentos vividos estén protegidos y solo yo pueda consultarlos
+```
 ---
 
 ## 🏁 Rúbrica de evaluación
