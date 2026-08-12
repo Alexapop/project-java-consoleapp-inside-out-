@@ -1,189 +1,26 @@
-# Project Inside Out
+# Título
 
-## Instrucciones
-Se os ha encargado la creación de una aplicación de consola con la cual el usuario podrá gestionar momentos vividos, Mi Diario. Cada momento tendrá una emoción asignada junto con la fecha de cuando ocurrio.
+# Mi Diario - Project Inside Out
 
-Cada momento vivído tendrá un identificador, un título, una descripción, una emoción, fecha del momento, fecha de creación, fecha de modificación.
+## Descripción
 
-Listado de emociones:
-1. Alegría
-2. Tristeza
-3. Ira
-4. Asco
-5. Miedo
-6. Ansiedad
-7. Envidia
-8. Vergüenza
-9. Aburrimiento
-10. Nostalgia
+Este proyecto forma parte del bootcamp de Factoría F5 y consiste en una aplicación de consola desarrollada en Java para gestionar recuerdos o momentos vividos del usuario. La aplicación permite registrar experiencias, asignarles una emoción, consultar el historial, filtrarlos por emoción o fecha y eliminarlos cuando ya no sean necesarios.
 
-Por cada historia de usuario se deberán redactar los criterios de aceptación.
+La idea principal es ofrecer un diario personal simple, útil y fácil de usar desde terminal, ideal para practicar conceptos de programación orientada a objetos, manejo de colecciones, validación de datos y pruebas unitarias.
+
+### Sinopsis del proyecto
+
+"Mi Diario" es una herramienta pensada para guardar momentos importantes de la vida cotidiana, cada uno con su título, descripción, fecha del acontecimiento, emoción asociada y metadatos como fecha de creación y modificación. El usuario puede interactuar con la aplicación mediante un menú textual para añadir, listar, filtrar y eliminar recuerdos.
+
 
 ---
 
-## Historias de usuario
-1. COMO usuario QUIERO añadir un momento vivido PARA poder visualisarlo cuando lo necesite recordar
+## Documentación
 
-2. COMO usuario QUIERO recuperar la lista de lo momentos vividos registrados PARA poder repasarlos
+La documentación detallada del proyecto está disponible en la Wiki, organizada en el siguiente orden:
 
-3. COMO usuario QUIERO suprimir un momento vivido PARA evitar duplicados y mantener la lista de momentos organizada
-
-4. COMO usuario QUIERO obtener los momentos vividos según su emoción PARA poder visualizarlos
-
-5. COMO usuario QUIERO obtener los momentos vividos en un mes determinado
-
-6. COMO usuario QUIERO salir del programa PARA poder iniciar otro
-
----
-
-## Ejemplo de interacción con la consola
-
-```
-My diario:
-1. Añadir momento
-2. Ver todos los momentos disponibles
-3. Eliminar un momento
-4. Filtrar los momentos
-5. Salir
-Seleccione una opción: 1
-
-Ingrese el título: Un día en el parque de atracciones
-Ingresa la fecha (dd/mm/year): 01/05/2024
-Ingrese la descripción: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed eros vel massa scelerisque convallis interdum ut purus.
-
-Selecciona una emoción:
-1. Alegría
-2. Tristeza
-3. Ira
-4. Asco
-5. Miedo
-6. Ansiedad
-7. Envidia
-8. Vergüenza
-9. Aburrimiento
-10. Nostalgia
-Ingrese su opción: 1
-Momento vivído añadido correctamente.
-
-My diario:
-1. Añadir momento
-2. Ver todos los momentos disponibles
-3. Eliminar un momento
-4. Filtrar los momentos
-5. Salir
-Seleccione una opción: 2
-
-Lista de momentos vividos:
-1. Ocurrio el: 01/01/2024. Título: Un día en el parque de atracciones. Descripción: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed eros vel massa scelerisque convallis interdum ut purus. Emoción: Alegría
-
-My diario:
-1. Añadir momento
-2. Ver todos los momentos disponibles
-3. Eliminar un momento
-4. Filtrar los momentos
-5. Salir
-Seleccione una opción: 3
-
-Ingresa el identificador del momento: 1
-Momento vivído eliminado correctamente.
-
-My diario:
-1. Añadir momento
-2. Ver todos los momentos disponibles
-3. Eliminar un momento
-4. Filtrar los momentos
-5. Salir
-Seleccione una opción: 4
-
-Filtar por ...:
-1. Emoción
-2. Fecha
-Ingrese una opción: 1
-
-Selecciona una emoción:
-1. Alegría
-2. Tristeza
-3. Ira
-4. Asco
-5. Miedo
-6. Ansiedad
-7. Envidia
-8. Vergüenza
-9. Aburrimiento
-10. Nostalgia
-Ingrese su opción: 1
-
-Lista de momentos vividos:
-1. Ocurrio el: 01/01/2024. Título: Un día en el parque de atracciones. Descripción: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed eros vel massa scelerisque convallis interdum ut purus. Emoción: Alegría
-
-My diario:
-1. Añadir momento
-2. Ver todos los momentos disponibles
-3. Eliminar un momento
-4. Filtrar los momentos
-5. Salir
-Seleccione una opción: 4
-
-Filtrar por ...:
-1. Emoción
-2. Fecha
-Ingrese una opción: 2
-
-Ingrese la fecha (dd/mm/year): 01/01/2024
-
-Lista de momentos vividos:
-1. Ocurrio el: 01/01/2024. Título: Un día en el parque de atracciones. Descripción: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed eros vel massa scelerisque convallis interdum ut purus. Emoción: Alegría
-
-My diario:
-1. Añadir momento
-2. Ver todos los momentos disponibles
-3. Eliminar un momento
-4. Filtrar los momentos
-5. Salir
-Seleccione una opción: 5
-
-Hasta la próxima!!!
-```
-
----
-
-## Refinamiento
-### Historias de usuarios
-```
-## Modificar datos de un momento vivido
-**Como** usuario  
-**Quiero** modificar cualquier dato de un momento vivido (título, descripción, emoción o fecha del momento)  
-**Para** mantener mi diario actualizado cuando necesite corregir o ampliar información
-
-## Generar un archivo de momentos vividos en formato CSV
-**Como** usuario  
-**Quiero** generar la lista completa de momentos vividos en un archivo CSV  
-**Para** guardar, compartir o analizar mis recuerdos fuera de la aplicación
-
-## Acceso protegido por contraseña
-**Como** usuario  
-**Quiero** acceder a mi diario únicamente mediante una contraseña  
-**Para** asegurar que mis momentos vividos estén protegidos y solo yo pueda consultarlos
-```
----
-
-## 🏁 Rúbrica de evaluación
-- <strong>Interfaz de usuario</strong>
-    - La interfaz de usuario permite añadir (10%)
-    - La interfaz de usuario permite visualizar todos los momentos (10%)
-    - La interfaz de usuario permite eliminar un momento (10%)
-    - La interfaz de usuario permite filtrar por emoción (10%)
-    - La interfaz de usuario permite filtrar por fecha (10%)
-
-- <strong>Persistencia de datos</strong>
-    - Se hace un uso adecuado de la interface Map\<E>. (10%)
-
-- <strong>Código y Buenas Prácticas</strong>
-    - Tests de cobertura mínimo un 70% (10%)
-    - El código está bien estructurado (10%)
-    - Correcta separación de responsabiidades. S de "SOLID" (10%)
-
-- Documentación: Readme debidamente trabajado (10%)
-
-- Si el programa presenta errores de compilación se calificará el proyecto con 0 pts
-
+1. [Pre‐requisitos](https://github.com/Alexapop/project-java-consoleapp-inside-out-/wiki/Pre%E2%80%90requisitos)
+2. [Instalación](https://github.com/Alexapop/project-java-consoleapp-inside-out-/wiki/Instalaci%C3%B3n)
+3. [Historias de usuario](https://github.com/Alexapop/project-java-consoleapp-inside-out-/wiki/Historias-de-usuario)
+4. [Diagramas](https://github.com/Alexapop/project-java-consoleapp-inside-out-/wiki/Diagramas)
+5. [Tests](https://github.com/Alexapop/project-java-consoleapp-inside-out-/wiki/Tests)
