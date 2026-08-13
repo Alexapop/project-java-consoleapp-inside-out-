@@ -1,8 +1,4 @@
-# Título
-
 # Mi Diario - Project Inside Out
-
-## Descripción
 
 Este proyecto forma parte del bootcamp de Factoría F5 y consiste en una aplicación de consola desarrollada en Java para gestionar recuerdos o momentos vividos del usuario. La aplicación permite registrar experiencias, asignarles una emoción, consultar el historial, filtrarlos por emoción o fecha y eliminarlos cuando ya no sean necesarios.
 
@@ -11,6 +7,14 @@ La idea principal es ofrecer un diario personal simple, útil y fácil de usar d
 ### Sinopsis del proyecto
 
 "Mi Diario" es una herramienta pensada para guardar momentos importantes de la vida cotidiana, cada uno con su título, descripción, fecha del acontecimiento, emoción asociada y metadatos como fecha de creación y modificación. El usuario puede interactuar con la aplicación mediante un menú textual para añadir, listar, filtrar y eliminar recuerdos.
+
+## Arquitectura
+
+El proyecto utiliza **Clean Architecture** para separar las responsabilidades entre las capas de dominio, aplicación, infraestructura y presentación.
+
+En la capa de presentación se aplica el patrón **MVC (Modelo-Vista-Controlador)** para gestionar la interacción con el usuario mediante la consola.
+
+Para obtener más información sobre la estructura y las responsabilidades de cada capa, consulta la documentación de la [arquitectura del proyecto](https://github.com/Alexapop/project-java-consoleapp-inside-out-/wiki/Arquitectura).
 
 
 ---
