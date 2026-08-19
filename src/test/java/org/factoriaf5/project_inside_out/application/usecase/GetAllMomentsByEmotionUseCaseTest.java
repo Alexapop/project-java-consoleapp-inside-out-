@@ -7,45 +7,31 @@ import java.util.List;
 
 import org.factoriaf5.project_inside_out.domain.entities.Emotion;
 import org.factoriaf5.project_inside_out.domain.entities.Moment;
+import org.factoriaf5.project_inside_out.infrastructure.repository.InMemoryMomentRepository;
 import org.junit.jupiter.api.Test;
 
 class GetAllMomentsByEmotionUseCaseTest {
 
     @Test
     void shouldReturnMomentsFilteredByEmotion() {
-        List<Moment> expectedMoments = List.of(createMoment());
-        FilterByEmotionRepositoryStub repository = new FilterByEmotionRepositoryStub(expectedMoments);
+        InMemoryMomentRepository repository = new InMemoryMomentRepository();
+        Moment expectedMoment = repository.add(createMoment(Emotion.NOSTALGIA));
+        repository.add(createMoment(Emotion.ALEGRIA));
         GetAllMomentsByEmotionUseCase useCase = new GetAllMomentsByEmotionUseCase(repository);
 
         List<Moment> result = useCase.execute(Emotion.NOSTALGIA);
 
-        assertEquals(Emotion.NOSTALGIA, repository.receivedEmotion);
-        assertEquals(expectedMoments, result);
+        assertEquals(List.of(expectedMoment), result);
     }
 
-    private static Moment createMoment() {
+    private static Moment createMoment(Emotion emotion) {
         return new Moment(
-                1L,
+                null,
                 "A memory",
-                "A nostalgic memory",
-                Emotion.NOSTALGIA,
+                "A meaningful memory",
+                emotion,
                 LocalDate.of(2026, 8, 19),
                 LocalDate.of(2026, 8, 19),
                 null);
-    }
-
-    private static class FilterByEmotionRepositoryStub extends MomentRepositoryStub {
-        private final List<Moment> moments;
-        private Emotion receivedEmotion;
-
-        private FilterByEmotionRepositoryStub(List<Moment> moments) {
-            this.moments = moments;
-        }
-
-        @Override
-        public List<Moment> filterByEmotion(Emotion emotion) {
-            receivedEmotion = emotion;
-            return moments;
-        }
     }
 }

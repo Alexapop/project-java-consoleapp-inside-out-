@@ -4,48 +4,59 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import org.factoriaf5.project_inside_out.application.dto.AuthenticateUserRequest;
 import org.factoriaf5.project_inside_out.application.dto.AuthenticateUserResponse;
+import org.factoriaf5.project_inside_out.domain.repository.PasswordRepository;
 import org.junit.jupiter.api.Test;
 
 class AuthenticateUserUseCaseTest {
 
     @Test
     void shouldAuthenticateWhenPasswordIsCorrect() {
-        VerifyPasswordRepositoryStub repository = new VerifyPasswordRepositoryStub(true);
+        AtomicReference<String> receivedPassword = new AtomicReference<>();
+        PasswordRepository repository = createPasswordRepository(true, receivedPassword);
         AuthenticateUserUseCase useCase = new AuthenticateUserUseCase(repository);
 
         AuthenticateUserResponse response = useCase.execute(
                 new AuthenticateUserRequest("correct-password"));
 
         assertTrue(response.authenticated());
-        assertEquals("correct-password", repository.receivedPassword);
+        assertEquals("correct-password", receivedPassword.get());
     }
 
     @Test
     void shouldRejectAuthenticationWhenPasswordIsIncorrect() {
-        VerifyPasswordRepositoryStub repository = new VerifyPasswordRepositoryStub(false);
+        AtomicReference<String> receivedPassword = new AtomicReference<>();
+        PasswordRepository repository = createPasswordRepository(false, receivedPassword);
         AuthenticateUserUseCase useCase = new AuthenticateUserUseCase(repository);
 
         AuthenticateUserResponse response = useCase.execute(
                 new AuthenticateUserRequest("incorrect-password"));
 
         assertFalse(response.authenticated());
-        assertEquals("incorrect-password", repository.receivedPassword);
+        assertEquals("incorrect-password", receivedPassword.get());
     }
 
-    private static class VerifyPasswordRepositoryStub extends PasswordRepositoryStub {
-        private final boolean verificationResult;
-        private String receivedPassword;
+    private static PasswordRepository createPasswordRepository(
+            boolean verificationResult,
+            AtomicReference<String> receivedPassword) {
+        return new PasswordRepository() {
+            @Override
+            public boolean passwordExists() {
+                return false;
+            }
 
-        private VerifyPasswordRepositoryStub(boolean verificationResult) {
-            this.verificationResult = verificationResult;
-        }
+            @Override
+            public void savePassword(String password) {
+            }
 
-        @Override
-        public boolean verifyPassword(String password) {
-            receivedPassword = password;
-            return verificationResult;
-        }
+            @Override
+            public boolean verifyPassword(String password) {
+                receivedPassword.set(password);
+                return verificationResult;
+            }
+        };
     }
 }

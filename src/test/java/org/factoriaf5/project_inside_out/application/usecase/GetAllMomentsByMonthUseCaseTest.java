@@ -7,48 +7,31 @@ import java.util.List;
 
 import org.factoriaf5.project_inside_out.domain.entities.Emotion;
 import org.factoriaf5.project_inside_out.domain.entities.Moment;
+import org.factoriaf5.project_inside_out.infrastructure.repository.InMemoryMomentRepository;
 import org.junit.jupiter.api.Test;
 
 class GetAllMomentsByMonthUseCaseTest {
 
     @Test
     void shouldReturnMomentsFilteredByMonthAndYear() {
-        List<Moment> expectedMoments = List.of(createMoment());
-        FilterByMonthRepositoryStub repository = new FilterByMonthRepositoryStub(expectedMoments);
+        InMemoryMomentRepository repository = new InMemoryMomentRepository();
+        Moment expectedMoment = repository.add(createMoment(LocalDate.of(2026, 8, 10)));
+        repository.add(createMoment(LocalDate.of(2026, 7, 10)));
         GetAllMomentsByMonthUseCase useCase = new GetAllMomentsByMonthUseCase(repository);
 
         List<Moment> result = useCase.execute(8, 2026);
 
-        assertEquals(8, repository.receivedMonth);
-        assertEquals(2026, repository.receivedYear);
-        assertEquals(expectedMoments, result);
+        assertEquals(List.of(expectedMoment), result);
     }
 
-    private static Moment createMoment() {
+    private static Moment createMoment(LocalDate momentDate) {
         return new Moment(
-                1L,
+                null,
                 "Summer day",
-                "A moment from August",
+                "A summer moment",
                 Emotion.ALEGRIA,
-                LocalDate.of(2026, 8, 10),
+                momentDate,
                 LocalDate.of(2026, 8, 11),
                 null);
-    }
-
-    private static class FilterByMonthRepositoryStub extends MomentRepositoryStub {
-        private final List<Moment> moments;
-        private int receivedMonth;
-        private int receivedYear;
-
-        private FilterByMonthRepositoryStub(List<Moment> moments) {
-            this.moments = moments;
-        }
-
-        @Override
-        public List<Moment> filterByMonth(int month, int year) {
-            receivedMonth = month;
-            receivedYear = year;
-            return moments;
-        }
     }
 }

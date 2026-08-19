@@ -10,6 +10,7 @@ import org.factoriaf5.project_inside_out.application.dto.CreateMomentRequest;
 import org.factoriaf5.project_inside_out.application.dto.MomentResponse;
 import org.factoriaf5.project_inside_out.domain.entities.Emotion;
 import org.factoriaf5.project_inside_out.domain.entities.Moment;
+import org.factoriaf5.project_inside_out.infrastructure.repository.InMemoryMomentRepository;
 import org.junit.jupiter.api.Test;
 
 class AddMomentUseCaseTest {
@@ -24,40 +25,24 @@ class AddMomentUseCaseTest {
                 Emotion.ALEGRIA,
                 momentDate,
                 creationDate);
-        AddMomentRepositoryStub repository = new AddMomentRepositoryStub();
+        InMemoryMomentRepository repository = new InMemoryMomentRepository();
         AddMomentUseCase useCase = new AddMomentUseCase(repository);
 
         MomentResponse response = useCase.execute(request);
+        Moment savedMoment = repository.findById(response.id());
 
         assertAll(
-                () -> assertNull(repository.addedMoment.getId()),
-                () -> assertEquals(request.title(), repository.addedMoment.getTitle()),
-                () -> assertEquals(request.description(), repository.addedMoment.getDescription()),
-                () -> assertEquals(request.emotion(), repository.addedMoment.getEmotion()),
-                () -> assertEquals(request.momentDate(), repository.addedMoment.getMomentDate()),
-                () -> assertEquals(request.creationDate(), repository.addedMoment.getCreationDate()),
-                () -> assertNull(repository.addedMoment.getModificationDate()),
+                () -> assertEquals(1L, savedMoment.getId()),
+                () -> assertEquals(request.title(), savedMoment.getTitle()),
+                () -> assertEquals(request.description(), savedMoment.getDescription()),
+                () -> assertEquals(request.emotion(), savedMoment.getEmotion()),
+                () -> assertEquals(request.momentDate(), savedMoment.getMomentDate()),
+                () -> assertEquals(request.creationDate(), savedMoment.getCreationDate()),
+                () -> assertNull(savedMoment.getModificationDate()),
                 () -> assertEquals(1L, response.id()),
                 () -> assertEquals(request.title(), response.title()),
                 () -> assertEquals(request.description(), response.description()),
                 () -> assertEquals(request.emotion(), response.emotion()),
                 () -> assertEquals(request.momentDate(), response.momentDate()));
-    }
-
-    private static class AddMomentRepositoryStub extends MomentRepositoryStub {
-        private Moment addedMoment;
-
-        @Override
-        public Moment add(Moment moment) {
-            addedMoment = moment;
-            return new Moment(
-                    1L,
-                    moment.getTitle(),
-                    moment.getDescription(),
-                    moment.getEmotion(),
-                    moment.getMomentDate(),
-                    moment.getCreationDate(),
-                    moment.getModificationDate());
-        }
     }
 }
