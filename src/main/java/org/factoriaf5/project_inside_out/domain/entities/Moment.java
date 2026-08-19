@@ -12,9 +12,10 @@ public class Moment {
    private LocalDate creationDate;
    private LocalDate modificationDate;
 
-   public Moment(String title, String description, Emotion emotion, LocalDate momentDate, LocalDate creationDate,
+   public Moment(Long id, String title, String description, Emotion emotion, LocalDate momentDate, LocalDate creationDate,
          LocalDate modificationDate) {
 
+      this.id = id;
       this.title = title;
       this.description = description;
       this.emotion = emotion;
