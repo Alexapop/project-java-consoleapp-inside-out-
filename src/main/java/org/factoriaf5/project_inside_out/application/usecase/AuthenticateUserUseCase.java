@@ -1,5 +1,7 @@
 package org.factoriaf5.project_inside_out.application.usecase;
 
+import org.factoriaf5.project_inside_out.application.dto.AuthenticateUserRequest;
+import org.factoriaf5.project_inside_out.application.dto.AuthenticateUserResponse;
 import org.factoriaf5.project_inside_out.domain.repository.PasswordRepository;
 
 public class AuthenticateUserUseCase {
@@ -10,7 +12,8 @@ public class AuthenticateUserUseCase {
         this.passwordRepository = passwordRepository;
     }
 
-    public boolean execute(String password) {
-       return passwordRepository.verifyPassword(password);
+    public AuthenticateUserResponse execute(AuthenticateUserRequest request)
+     {
+       return new AuthenticateUserResponse(passwordRepository.verifyPassword(request.password()));
 }
 }
