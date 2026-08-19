@@ -9,6 +9,8 @@ public interface MomentRepository {
 
     Moment add(Moment moment);
 
+    Moment findById(Long id);
+
     Moment modify(Moment moment);
 
     List<Moment> findAllMoments();
