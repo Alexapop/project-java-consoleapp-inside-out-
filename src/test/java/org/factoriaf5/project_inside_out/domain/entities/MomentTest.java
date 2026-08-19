@@ -11,11 +11,13 @@ class MomentTest {
 
     @Test
     void shouldCreateMomentWithProvidedData() {
+        Long id = 1L;
         LocalDate momentDate = LocalDate.of(2026, 8, 3);
         LocalDate creationDate = LocalDate.of(2026, 8, 1);
         LocalDate modificationDate = LocalDate.of(2026, 8, 12);
 
         Moment moment = new Moment(
+                id,
                 "Un día especial",
                 "Visitar a mi familia",
                 Emotion.ALEGRIA,
@@ -71,6 +73,7 @@ class MomentTest {
 
     private Moment createMoment() {
         return new Moment(
+                 1L,
                 "Título",
                 "Descripción",
                 Emotion.ALEGRIA,
