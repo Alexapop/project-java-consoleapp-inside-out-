@@ -16,6 +16,7 @@ import org.factoriaf5.project_inside_out.application.usecase.ExportMomentsToCSVU
 import org.factoriaf5.project_inside_out.application.usecase.GetAllMomentsByEmotionUseCase;
 import org.factoriaf5.project_inside_out.application.usecase.GetAllMomentsByMonthUseCase;
 import org.factoriaf5.project_inside_out.application.usecase.GetAllMomentsUseCase;
+import org.factoriaf5.project_inside_out.application.usecase.ModifyMomentUseCase;
 import org.factoriaf5.project_inside_out.domain.repository.MomentRepository;
 import org.factoriaf5.project_inside_out.domain.repository.PasswordRepository;
 import org.factoriaf5.project_inside_out.infrastructure.repository.InMemoryMomentRepository;
@@ -31,10 +32,10 @@ class ConsoleViewTest {
                 19/08/2026
                 A description
                 TRISTEZA
-                3
+                4
                 1
                 2
-                7
+                8
                 """);
 
         assertTrue(result.contains("Momento eliminado correctamente."));
@@ -44,9 +45,9 @@ class ConsoleViewTest {
     @Test
     void shouldDisplayMessageWhenEmotionHasNoMoments() {
         String result = runView("""
-                4
+                5
                 ALEGRIA
-                7
+                8
                 """);
 
         assertTrue(result.contains("No hay momentos con esa emoción."));
@@ -55,13 +56,37 @@ class ConsoleViewTest {
     @Test
     void shouldDisplayMessageWhenMonthHasNoMoments() {
         String result = runView("""
-                5
+                6
                 8
                 2026
-                7
+                8
                 """);
 
         assertTrue(result.contains("No hay momentos en ese mes."));
+    }
+
+    @Test
+    void shouldModifyMoment() {
+        String result = runView("""
+                1
+                Old title
+                19/08/2026
+                Old description
+                TRISTEZA
+                3
+                1
+                New title
+                20/08/2026
+                New description
+                ALEGRIA
+                2
+                8
+                """);
+
+        assertTrue(result.contains("Momento modificado correctamente."));
+        assertTrue(result.contains("Título: New title"));
+        assertTrue(result.contains("Descripción: New description"));
+        assertTrue(result.contains("Emoción: ALEGRIA"));
     }
 
     private String runView(String input) {
@@ -96,6 +121,7 @@ class ConsoleViewTest {
                 new AddMomentUseCase(repository),
                 new GetAllMomentsUseCase(repository),
                 new DeleteMomentUseCase(repository),
+                new ModifyMomentUseCase(repository),
                 new GetAllMomentsByEmotionUseCase(repository),
                 new GetAllMomentsByMonthUseCase(repository),
                 new ExportMomentsToCSVUseCase(repository));
