@@ -1,5 +1,7 @@
 package org.factoriaf5;
 
+import java.util.prefs.Preferences;
+
 import org.factoriaf5.project_inside_out.application.usecase.AddMomentUseCase;
 import org.factoriaf5.project_inside_out.application.usecase.AuthenticateUserUseCase;
 import org.factoriaf5.project_inside_out.application.usecase.CreatePasswordUseCase;
@@ -22,7 +24,7 @@ public final class App {
 
         public static void main(String[] args) {
 
-                PasswordRepository passwordRepository = new InMemoryPasswordRepository();
+                PasswordRepository passwordRepository = new PreferencesPasswordRepository();
                 CreatePasswordUseCase createPasswordUseCase = new CreatePasswordUseCase(passwordRepository);
                 AuthenticateUserUseCase authenticateUserUseCase = new AuthenticateUserUseCase(passwordRepository);
 
@@ -66,22 +68,26 @@ public final class App {
                 consoleView.start();
         }
 
-        private static final class InMemoryPasswordRepository implements PasswordRepository {
+        private static final class PreferencesPasswordRepository implements PasswordRepository {
 
-                private String savedPassword;
+                private static final String PASSWORD_KEY = "inside-out-password";
+
+                private final Preferences preferences = Preferences.userNodeForPackage(App.class);
 
                 @Override
                 public boolean passwordExists() {
-                        return savedPassword != null;
+                        return preferences.get(PASSWORD_KEY, null) != null;
                 }
 
                 @Override
                 public void savePassword(String password) {
-                        this.savedPassword = password;
+                        preferences.put(PASSWORD_KEY, password);
                 }
 
                 @Override
                 public boolean verifyPassword(String password) {
+                        String savedPassword = preferences.get(PASSWORD_KEY, null);
+
                         return savedPassword != null && savedPassword.equals(password);
                 }
         }
