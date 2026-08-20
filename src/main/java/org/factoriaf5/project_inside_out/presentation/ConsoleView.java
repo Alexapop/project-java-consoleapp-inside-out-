@@ -9,12 +9,16 @@ import org.factoriaf5.project_inside_out.domain.entities.Moment;
 public class ConsoleView {
 
     private final MomentController controller;
+    private final PasswordController passwordController;
     private final Scanner scanner;
 
     // // Constructor injection guarantees the view has access to the controller
 
-    public ConsoleView(MomentController controller) {
+    public ConsoleView(
+            MomentController controller,
+            PasswordController passwordController) {
         this.controller = controller;
+        this.passwordController = passwordController;
         this.scanner = new Scanner(System.in);
     }
 
@@ -22,6 +26,11 @@ public class ConsoleView {
 
     public void start() {
 
+        if (!handleAuthentication()) {
+            System.err.println("Acceso denegado");
+            return;
+
+        }
         // use a "running" variable, true =active, false =stopped to keep track if app
         // should stay alive
         boolean running = true;
@@ -29,6 +38,7 @@ public class ConsoleView {
         // use "while" to create a loop which repeat as long running stays true
 
         while (running) {
+
             printMenu();
 
             // 4. Freeze execution here and wait for the user to type something and hit
@@ -89,6 +99,26 @@ public class ConsoleView {
         System.out.println("6. Exportar momentos a archivo CSV");
         System.out.println("7. Salir");
         System.out.print("Seleccione una opción:");
+    }
+
+    private boolean handleAuthentication() {
+
+        if (!passwordController.passwordExists()) {
+            System.out.println("Crea tu contraseña:");
+
+            String newPassword = scanner.nextLine();
+
+            passwordController.createPassword(newPassword);
+            System.out.println("Contraseña creada correctamente.");
+
+            return true;
+        }
+
+        System.out.println("Introduce tu contraseña:");
+
+        String password = scanner.nextLine();
+
+        return passwordController.authenticate(password);
     }
 
     private void handleAddMoment() {
