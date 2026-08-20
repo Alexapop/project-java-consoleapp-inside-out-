@@ -10,7 +10,15 @@ public class CreatePasswordUseCase {
         this.passwordRepository = passwordRepository;
     }
 
+    public boolean passwordExists() {
+        return passwordRepository.passwordExists();
+    }
+
     public void execute(String password) {
+
+        if (passwordRepository.passwordExists()) {
+            throw new IllegalStateException("La contraseña ya existe.");
+        }
         passwordRepository.savePassword(password);
 
     }
