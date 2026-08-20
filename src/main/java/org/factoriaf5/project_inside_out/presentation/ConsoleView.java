@@ -1,9 +1,13 @@
 package org.factoriaf5.project_inside_out.presentation;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
 
+import org.factoriaf5.project_inside_out.domain.entities.Emotion;
 import org.factoriaf5.project_inside_out.domain.entities.Moment;
 
 public class ConsoleView {
@@ -89,6 +93,57 @@ public class ConsoleView {
         }
     }
 
+    private String readValidDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        while (true) {
+            System.out.println("Ingresa la fecha (dd/MM/yyyy):");
+            String date = scanner.nextLine().trim();
+
+            try {
+                LocalDate.parse(date, formatter);
+                return date;
+            } catch (DateTimeParseException exception) {
+                System.err.println(
+                        "Fecha inválida. Utiliza el formato dd/MM/yyyy.");
+            }
+        }
+    }
+
+    private String readRequiredText(String message, String errorMessage) {
+        while (true) {
+            System.out.print(message);
+            String text = scanner.nextLine().trim();
+
+            if (!text.isBlank()) {
+                return text;
+            }
+
+            System.err.println(errorMessage);
+        }
+    }
+
+    private String readValidEmotion() {
+        System.out.println("Emociones disponibles:");
+
+        for (Emotion availableEmotion : Emotion.values()) {
+            System.out.println("- " + availableEmotion);
+        }
+
+        while (true) {
+            System.out.print("Selecciona una emoción: ");
+            String emotion = scanner.nextLine().trim().toUpperCase();
+
+            try {
+                Emotion.valueOf(emotion);
+                return emotion;
+            } catch (IllegalArgumentException exception) {
+                System.err.println(
+                        "Emoción inválida. Selecciona una emoción de la lista.");
+            }
+        }
+    }
+
     private void printMenu() {
         System.out.println("=== INSIDE OUT: My Diario ===");
         System.out.println("1. Añadir momento");
@@ -124,18 +179,16 @@ public class ConsoleView {
     private void handleAddMoment() {
         System.out.println("\n--- Registrar nuevo momento ---");
 
-        System.out.println("Ingrese el título:");
-        // waiting for user to write something and click Enter
-        String title = scanner.nextLine();
+        String title = readRequiredText(
+                "Ingrese el título: ",
+                "El título no puede estar vacío.");
 
-        System.out.println("Ingresa la fecha ((dd/MM/yyyy):");
-        String momentDate = scanner.nextLine();
+        String momentDate = readValidDate();
+        String description = readRequiredText(
+                "Introduce la descripción: ",
+                "La descripción no puede estar vacía.");
 
-        System.out.print("Introduce la descripción: ");
-        String description = scanner.nextLine();
-
-        System.out.print("Selecciona una emoción(ej. Alegria, Tristeza, etc.): ");
-        String emotion = scanner.nextLine();
+        String emotion = readValidEmotion();
 
         // Pass variables to your controller implementation
         controller.addMoment(title, momentDate, description, emotion);
