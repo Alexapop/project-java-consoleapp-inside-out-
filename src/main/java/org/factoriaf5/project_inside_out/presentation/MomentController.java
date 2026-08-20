@@ -37,9 +37,9 @@ public class MomentController {
             AddMomentUseCase addMomentUseCase,
             GetAllMomentsUseCase getAllMomentsUseCase,
             DeleteMomentUseCase deleteMomentUseCase,
-          GetAllMomentsByEmotionUseCase getAllMomentsByEmotionUseCase,
-        GetAllMomentsByMonthUseCase getAllMomentsByMonthUseCase,
-        ExportMomentsToCSVUseCase exportMomentsToCSVUseCase) {
+            GetAllMomentsByEmotionUseCase getAllMomentsByEmotionUseCase,
+            GetAllMomentsByMonthUseCase getAllMomentsByMonthUseCase,
+            ExportMomentsToCSVUseCase exportMomentsToCSVUseCase) {
 
         // Save the received AddMomentUseCase in this controlle
         // Save the received GetAllMomentsUseCase in this controller,etc.
@@ -71,7 +71,6 @@ public class MomentController {
         Emotion parsedEmotion = Emotion.valueOf(formattedEmotion);
 
         // Create the request required by AddMomentUseCase
-
         CreateMomentRequest request = new CreateMomentRequest(
                 title,
                 description,
