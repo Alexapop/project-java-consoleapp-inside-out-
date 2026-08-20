@@ -1,12 +1,12 @@
 # Mi Diario - Project Inside Out
 
-Este proyecto forma parte del bootcamp de Factoría F5 y consiste en una aplicación de consola desarrollada en Java para gestionar recuerdos o momentos vividos del usuario. La aplicación permite registrar experiencias, asignarles una emoción, consultar el historial, filtrarlos por emoción o fecha y eliminarlos cuando ya no sean necesarios.
+Este proyecto forma parte del bootcamp de Factoría F5 y consiste en una aplicación de consola desarrollada en Java para gestionar los recuerdos o momentos vividos por el usuario.
 
-La idea principal es ofrecer un diario personal simple, útil y fácil de usar desde terminal, ideal para practicar conceptos de programación orientada a objetos, manejo de colecciones, validación de datos y pruebas unitarias.
+Cada momento registrado contiene un identificador, un título, una descripción, una emoción asociada, la fecha en que ocurrió, la fecha de creación y la fecha de última modificación.
 
-### Sinopsis del proyecto
+Después de autenticarse mediante una contraseña, el usuario puede interactuar con la aplicación a través de un menú textual para añadir, consultar, modificar, filtrar por emoción o fecha y eliminar momentos. Además, puede exportar los recuerdos almacenados a un archivo CSV.
 
-"Mi Diario" es una herramienta pensada para guardar momentos importantes de la vida cotidiana, cada uno con su título, descripción, fecha del acontecimiento, emoción asociada y metadatos como fecha de creación y modificación. El usuario puede interactuar con la aplicación mediante un menú textual para añadir, listar, filtrar y eliminar recuerdos.
+Es una aplicación de consola desarrollada en Java, basada en la programación orientada a objetos. El proyecto utiliza Maven para su gestión, JUnit 5 para las pruebas unitarias y JaCoCo para analizar la cobertura del código.
 
 ## Arquitectura
 
