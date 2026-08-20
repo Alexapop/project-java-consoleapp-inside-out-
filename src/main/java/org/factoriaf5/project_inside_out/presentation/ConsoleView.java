@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import org.factoriaf5.project_inside_out.domain.entities.Emotion;
@@ -39,6 +40,15 @@ public class ConsoleView {
         // should stay alive
         boolean running = true;
 
+        Map<String, Runnable> menuActions = Map.of(
+                "1", this::handleAddMoment,
+                "2", this::handleGetAllMoments,
+                "3", this::handleModifyMoment,
+                "4", this::handleDeleteMoment,
+                "5", this::handleFilterByEmotion,
+                "6", this::handleFilterByMonth,
+                "7", this::handleExportMomentsToCsv);
+
         // use "while" to create a loop which repeat as long running stays true
 
         while (running) {
@@ -50,46 +60,20 @@ public class ConsoleView {
 
             String choice = scanner.nextLine().trim();
 
-            // Use 'switch' to evaluate what text string the user stored inside the 'choice'
-            // variable.
-
-            switch (choice) {
-                case "1":
-                    handleAddMoment();
-
-                    break;
-
-                case "2":
-                    handleGetAllMoments();
-                    break;
-
-                case "3":
-                    handleDeleteMoment();
-
-                    break;
-
-                case "4":
-                    handleFilterByEmotion();
-                    break;
-
-                case "5":
-                    handleFilterByMonth();
-                    break;
-
-                case "6":
-                    handleExportMomentsToCsv();
-                    break;
-
-                case "7":
-                    System.err.println("Hasta la próxima!!!");
-                    // When the switch block ends, the 'while' loop detects that 'running' is false
-                    // and breaks out.
-                    running = false;
-                    break;
-                default:
-                    System.out.println("Opción no válida. Por favor, elige un número del 1 al 7.");
-                    break;
+            if (choice.equals("8")) {
+                System.err.println("Hasta la próxima!!!");
+                running = false;
+                continue;
             }
+
+            Runnable selectedAction = menuActions.get(choice);
+
+            if (selectedAction == null) {
+                System.out.println("Opción no válida. Por favor, elige un número del 1 al 8.");
+                continue;
+            }
+
+            selectedAction.run();
         }
     }
 
@@ -148,11 +132,12 @@ public class ConsoleView {
         System.out.println("=== INSIDE OUT: My Diario ===");
         System.out.println("1. Añadir momento");
         System.out.println("2. Ver todos los momentos disponibles");
-        System.out.println("3. Eliminar un momento");
-        System.out.println("4. Filtrar los momentos según su emocion");
-        System.out.println("5. Filtrar los momentos en un mes determinado");
-        System.out.println("6. Exportar momentos a archivo CSV");
-        System.out.println("7. Salir");
+        System.out.println("3. Modificar un momento");
+        System.out.println("4. Eliminar un momento");
+        System.out.println("5. Filtrar los momentos según su emocion");
+        System.out.println("6. Filtrar los momentos en un mes determinado");
+        System.out.println("7. Exportar momentos a archivo CSV");
+        System.out.println("8. Salir");
         System.out.print("Seleccione una opción:");
     }
 
@@ -200,20 +185,7 @@ public class ConsoleView {
         System.out.println("\n---Lista de momentos vividos:---");
 
         List<Moment> moments = controller.getAllMoments();
-
-        if (moments.isEmpty()) {
-            System.out.println("No hay momentos disponibles.");
-            return;
-        }
-
-        for (Moment moment : moments) {
-            System.out.println("ID: " + moment.getId());
-            System.out.println("Ocurrió el: " + moment.getMomentDate());
-            System.out.println("Título: " + moment.getTitle());
-            System.out.println("Descripción: " + moment.getDescription());
-            System.out.println("Emoción: " + moment.getEmotion());
-            System.out.println("-----------------------------");
-        }
+        printMoments(moments, "No hay momentos disponibles.");
     }
 
     private void handleDeleteMoment() {
@@ -232,26 +204,36 @@ public class ConsoleView {
         System.out.println("Momento eliminado correctamente.");
     }
 
+    private void handleModifyMoment() {
+        System.out.println("\n--- Modificar un momento ---");
+
+        System.out.print("Introduce el ID del momento: ");
+        Long id = Long.parseLong(scanner.nextLine().trim());
+
+        String title = readRequiredText(
+                "Introduce el nuevo título: ",
+                "El título no puede estar vacío.");
+
+        String momentDate = readValidDate();
+
+        String description = readRequiredText(
+                "Introduce la nueva descripción: ",
+                "La descripción no puede estar vacía.");
+
+        String emotion = readValidEmotion();
+
+        controller.modifyMoment(id, title, momentDate, description, emotion);
+
+        System.out.println("Momento modificado correctamente.");
+    }
+
     private void handleFilterByEmotion() {
         System.out.println("\n--- Filtrar momentos por emoción ---");
         System.out.print("Introduce una emoción: ");
 
         String emotion = scanner.nextLine().trim();
         List<Moment> moments = controller.filterByEmotion(emotion);
-
-        if (moments.isEmpty()) {
-            System.out.println("No hay momentos con esa emoción.");
-            return;
-        }
-
-        for (Moment moment : moments) {
-            System.out.println("ID: " + moment.getId());
-            System.out.println("Ocurrió el: " + moment.getMomentDate());
-            System.out.println("Título: " + moment.getTitle());
-            System.out.println("Descripción: " + moment.getDescription());
-            System.out.println("Emoción: " + moment.getEmotion());
-            System.out.println("-----------------------------");
-        }
+        printMoments(moments, "No hay momentos con esa emoción.");
     }
 
     private void handleFilterByMonth() {
@@ -263,9 +245,12 @@ public class ConsoleView {
         int year = Integer.parseInt(scanner.nextLine().trim());
 
         List<Moment> moments = controller.filterByMonth(month, year);
+        printMoments(moments, "No hay momentos en ese mes.");
+    }
 
+    private void printMoments(List<Moment> moments, String emptyMessage) {
         if (moments.isEmpty()) {
-            System.out.println("No hay momentos en ese mes.");
+            System.out.println(emptyMessage);
             return;
         }
 

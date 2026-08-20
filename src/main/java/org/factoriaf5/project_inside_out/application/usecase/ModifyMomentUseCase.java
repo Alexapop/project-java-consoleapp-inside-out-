@@ -1,5 +1,7 @@
 package org.factoriaf5.project_inside_out.application.usecase;
 
+import java.time.LocalDate;
+
 import org.factoriaf5.project_inside_out.application.dto.MomentResponse;
 import org.factoriaf5.project_inside_out.application.dto.UpdateMomentRequest;
 import org.factoriaf5.project_inside_out.domain.entities.Moment;
@@ -14,14 +16,18 @@ public class ModifyMomentUseCase {
     }
 
     public MomentResponse execute (Long id, UpdateMomentRequest request) {
-        Moment moment = momentRepository.findById(id);
+        Moment existingMoment = momentRepository.findById(id);
 
-        moment.setTitle(request.title());
-        moment.setDescription(request.description());
-        moment.setEmotion(request.emotion());
-        moment.setMomentDate(request.momentDate());
+        Moment momentToUpdate = new Moment(
+                existingMoment.getId(),
+                request.title(),
+                request.description(),
+                request.emotion(),
+                request.momentDate(),
+                existingMoment.getCreationDate(),
+                LocalDate.now());
 
-        Moment updatedMoment = momentRepository.modify(moment);
+        Moment updatedMoment = momentRepository.modify(momentToUpdate);
 
         return new MomentResponse(
                updatedMoment.getId(),

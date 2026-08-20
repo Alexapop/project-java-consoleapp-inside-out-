@@ -7,12 +7,14 @@ import java.util.List;
 
 import org.factoriaf5.project_inside_out.application.dto.CreateMomentRequest;
 import org.factoriaf5.project_inside_out.application.dto.MomentResponse;
+import org.factoriaf5.project_inside_out.application.dto.UpdateMomentRequest;
 import org.factoriaf5.project_inside_out.application.usecase.AddMomentUseCase;
 import org.factoriaf5.project_inside_out.application.usecase.DeleteMomentUseCase;
 import org.factoriaf5.project_inside_out.application.usecase.ExportMomentsToCSVUseCase;
 import org.factoriaf5.project_inside_out.application.usecase.GetAllMomentsUseCase;
 import org.factoriaf5.project_inside_out.application.usecase.GetAllMomentsByEmotionUseCase;
 import org.factoriaf5.project_inside_out.application.usecase.GetAllMomentsByMonthUseCase;
+import org.factoriaf5.project_inside_out.application.usecase.ModifyMomentUseCase;
 import org.factoriaf5.project_inside_out.domain.entities.Emotion;
 import org.factoriaf5.project_inside_out.domain.entities.Moment;
 
@@ -26,6 +28,8 @@ public class MomentController {
 
     private final DeleteMomentUseCase deleteMomentUseCase;
 
+    private final ModifyMomentUseCase modifyMomentUseCase;
+
     private final GetAllMomentsByEmotionUseCase getAllMomentsByEmotionUseCase;
 
     private final GetAllMomentsByMonthUseCase getAllMomentsByMonthUseCase;
@@ -37,6 +41,7 @@ public class MomentController {
             AddMomentUseCase addMomentUseCase,
             GetAllMomentsUseCase getAllMomentsUseCase,
             DeleteMomentUseCase deleteMomentUseCase,
+            ModifyMomentUseCase modifyMomentUseCase,
             GetAllMomentsByEmotionUseCase getAllMomentsByEmotionUseCase,
             GetAllMomentsByMonthUseCase getAllMomentsByMonthUseCase,
             ExportMomentsToCSVUseCase exportMomentsToCSVUseCase) {
@@ -46,6 +51,7 @@ public class MomentController {
         this.addMomentUseCase = addMomentUseCase;
         this.getAllMomentsUseCase = getAllMomentsUseCase;
         this.deleteMomentUseCase = deleteMomentUseCase;
+        this.modifyMomentUseCase = modifyMomentUseCase;
         this.getAllMomentsByEmotionUseCase = getAllMomentsByEmotionUseCase;
         this.getAllMomentsByMonthUseCase = getAllMomentsByMonthUseCase;
         this.exportMomentsToCSVUseCase = exportMomentsToCSVUseCase;
@@ -90,6 +96,27 @@ public class MomentController {
     // Delete the moment identified by the received ID
     public void deleteMoment(Long id) {
         deleteMomentUseCase.execute(id);
+    }
+
+    public MomentResponse modifyMoment(
+            Long id,
+            String title,
+            String momentDate,
+            String description,
+            String emotion) {
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate parsedMomentDate = LocalDate.parse(momentDate, dateFormatter);
+        String formattedEmotion = emotion.trim().toUpperCase();
+        Emotion parsedEmotion = Emotion.valueOf(formattedEmotion);
+
+        UpdateMomentRequest request = new UpdateMomentRequest(
+                title,
+                description,
+                parsedEmotion,
+                parsedMomentDate);
+
+        return modifyMomentUseCase.execute(id, request);
     }
 
     public List<Moment> filterByEmotion(String emotion) {

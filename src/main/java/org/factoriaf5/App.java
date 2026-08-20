@@ -7,6 +7,7 @@ import org.factoriaf5.project_inside_out.application.usecase.AuthenticateUserUse
 import org.factoriaf5.project_inside_out.application.usecase.CreatePasswordUseCase;
 import org.factoriaf5.project_inside_out.application.usecase.DeleteMomentUseCase;
 import org.factoriaf5.project_inside_out.application.usecase.GetAllMomentsUseCase;
+import org.factoriaf5.project_inside_out.application.usecase.ModifyMomentUseCase;
 import org.factoriaf5.project_inside_out.domain.repository.MomentRepository;
 import org.factoriaf5.project_inside_out.domain.repository.PasswordRepository;
 import org.factoriaf5.project_inside_out.infrastructure.repository.InMemoryMomentRepository;
@@ -44,6 +45,8 @@ public final class App {
                 // Create the use case responsible for deleting moments,etc.
                 DeleteMomentUseCase deleteMomentUseCase = new DeleteMomentUseCase(momentRepository);
 
+                ModifyMomentUseCase modifyMomentUseCase = new ModifyMomentUseCase(momentRepository);
+
                 GetAllMomentsByEmotionUseCase getAllMomentsByEmotionUseCase = new GetAllMomentsByEmotionUseCase(
                                 momentRepository);
 
@@ -57,6 +60,7 @@ public final class App {
                                 addMomentUseCase,
                                 getAllMomentsUseCase,
                                 deleteMomentUseCase,
+                                modifyMomentUseCase,
                                 getAllMomentsByEmotionUseCase,
                                 getAllMomentsByMonthUseCase,
                                 exportMomentsToCSVUseCase);
