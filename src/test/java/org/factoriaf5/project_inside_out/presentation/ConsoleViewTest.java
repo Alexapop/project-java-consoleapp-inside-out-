@@ -9,12 +9,15 @@ import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
 import org.factoriaf5.project_inside_out.application.usecase.AddMomentUseCase;
+import org.factoriaf5.project_inside_out.application.usecase.AuthenticateUserUseCase;
+import org.factoriaf5.project_inside_out.application.usecase.CreatePasswordUseCase;
 import org.factoriaf5.project_inside_out.application.usecase.DeleteMomentUseCase;
 import org.factoriaf5.project_inside_out.application.usecase.ExportMomentsToCSVUseCase;
 import org.factoriaf5.project_inside_out.application.usecase.GetAllMomentsByEmotionUseCase;
 import org.factoriaf5.project_inside_out.application.usecase.GetAllMomentsByMonthUseCase;
 import org.factoriaf5.project_inside_out.application.usecase.GetAllMomentsUseCase;
 import org.factoriaf5.project_inside_out.domain.repository.MomentRepository;
+import org.factoriaf5.project_inside_out.domain.repository.PasswordRepository;
 import org.factoriaf5.project_inside_out.infrastructure.repository.InMemoryMomentRepository;
 import org.junit.jupiter.api.Test;
 
@@ -49,13 +52,26 @@ class ConsoleViewTest {
         assertTrue(result.contains("No hay momentos con esa emoción."));
     }
 
+    @Test
+    void shouldDisplayMessageWhenMonthHasNoMoments() {
+        String result = runView("""
+                5
+                8
+                2026
+                7
+                """);
+
+        assertTrue(result.contains("No hay momentos en ese mes."));
+    }
+
     private String runView(String input) {
         InputStream originalInput = System.in;
         PrintStream originalOutput = System.out;
         PrintStream originalError = System.err;
 
         try {
-            System.setIn(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8)));
+            String inputWithPassword = "test-password\n" + input;
+            System.setIn(new ByteArrayInputStream(inputWithPassword.getBytes(StandardCharsets.UTF_8)));
 
             ByteArrayOutputStream consoleOutput = new ByteArrayOutputStream();
             PrintStream printStream = new PrintStream(consoleOutput, true, StandardCharsets.UTF_8);
@@ -84,6 +100,26 @@ class ConsoleViewTest {
                 new GetAllMomentsByMonthUseCase(repository),
                 new ExportMomentsToCSVUseCase(repository));
 
-        return new ConsoleView(controller);
+        PasswordRepository passwordRepository = new PasswordRepository() {
+            @Override
+            public boolean passwordExists() {
+                return true;
+            }
+
+            @Override
+            public void savePassword(String password) {
+            }
+
+            @Override
+            public boolean verifyPassword(String password) {
+                return "test-password".equals(password);
+            }
+        };
+
+        PasswordController passwordController = new PasswordController(
+                new CreatePasswordUseCase(passwordRepository),
+                new AuthenticateUserUseCase(passwordRepository));
+
+        return new ConsoleView(controller, passwordController);
     }
 }
